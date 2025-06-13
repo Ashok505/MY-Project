@@ -8,7 +8,7 @@ export default class Hcm_Ums_Locator {
         // click Hiring 
         this.clickHiring = page.locator('//ul//li[2]');
         this.clickOnsite = page.locator('//button//div[text()="Onsite Productivity"]');
-        this.clickHcmUms = page.locator('//button//div//div//div[text()="Hcm/Ums"]');
+        this.clickHcmUms = page.locator('//button//div//div//div[text()="HCM/UMS"]');
 
         //click checkbox
         this.clickCheckbox = page.locator('');

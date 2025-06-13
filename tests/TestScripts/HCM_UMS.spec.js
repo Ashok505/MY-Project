@@ -6,7 +6,8 @@ import fs from "fs";
 
 let ums;
 let screenShotIndex = 1;
-const screenshotFolder = './tests/TestData';
+// const screenshotFolder = 'TestData';
+const screenshotFolder = path.join(process.cwd(), 'tests', 'TestData');
 
 test.beforeAll(() => {
     if (fs.existsSync(screenshotFolder)) {
@@ -417,7 +418,7 @@ test('Scenario 33', async ({ page }) => {
 });
 
 
-test('Scenario 34', async ({ page }) => {
+test.only('Scenario 34', async ({ page }) => {
 // Complete flow with selecting Diploma in CRM WIL and UMS status as Not verified.
     await ums.clickHiring();
     await ums.checkbox();
@@ -433,12 +434,12 @@ test('Scenario 34', async ({ page }) => {
 
 });
 
-test.only('Scenario 35', async ({ page }) => {
+test('Scenario 35', async ({ page }) => {
 // Complete flow with selecting Diploma in CRM WIL and UMS status as verified.
     await ums.clickHiring();
     await page.waitForTimeout(2000);
     // await ums.download();
-    await ums.updateCandidateExcelRow(filePath , candidateName);
+    await ums.updateCandidateExcelRow('tests/TestScripts/hcm_ums_A2FDL.xlsx' , candidateName);
     
 
 });
