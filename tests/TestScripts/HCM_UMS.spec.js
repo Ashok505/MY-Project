@@ -3,6 +3,7 @@ import { HCM_UMS } from "../pages/HCM_UMS"
 import path from "path";
 import fs from "fs";
 
+test.setTimeout(60000); // 60 seconds
 
 let ums;
 let screenShotIndex = 1;
@@ -418,7 +419,7 @@ test('Scenario 33', async ({ page }) => {
 });
 
 
-test.only('Scenario 34', async ({ page }) => {
+test('Scenario 34', async ({ page }) => {
 // Complete flow with selecting Diploma in CRM WIL and UMS status as Not verified.
     await ums.clickHiring();
     await ums.checkbox();

@@ -62,8 +62,19 @@ exports.HCM_UMS =
 
         // This function is to select the adoption date
         async hcmAdoption() {
-            const contractFrom = await this.locator.extractContractDate;            //this line is to extract the contractFrom date so that the adoption date will be greater
-            console.log('The contract from date is :', contractFrom, 'so the adoption date should be greater');
+            const Ecode = await this.locator.extractE_CodeDate;            //this line is to extract the contractFrom date so that the adoption date will be greater
+            console.log('The E-Code generated date is :', Ecode, 'so the adoption date should be greater');
+            // Randomly pick a month offset: 0 = current, 1 = next, -1 = previous
+            await this.locator.clickAdoptionDate.click(); 
+            // const offset = Math.floor(Math.random() * 3) - 1;
+
+            // const date = new Date();
+            // date.setMonth(date.getMonth() + offset);
+            // const randomDay = Math.floor(Math.random() * 28) + 1;
+            // date.setDate(randomDay);
+
+            // const label = `${randomDay} ${date.toLocaleString('default', { month: 'long', year: 'numeric' })}`;
+
             const date = new Date();        //A constructor is created
             date.setDate(date.getDate() + (new Date().getTime() % 2 === 0 ? 1 : 2));
             await this.locator.clickAdoptionDate.click();     //clicks on the datepicker
@@ -240,41 +251,40 @@ exports.HCM_UMS =
         }
 
         async updateCandidateExcelRow(filePath, candidateName) {
-        const workbook = XLSX.readFile(filePath);
-        const sheet = workbook.Sheets[workbook.SheetNames[0]];
-        const rows = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+            const workbook = XLSX.readFile(filePath);
+            const sheet = workbook.Sheets[workbook.SheetNames[0]];
+            const rows = XLSX.utils.sheet_to_json(sheet, { header: 1 });
 
-        const rowIndex = rows.findIndex((row, i) =>
-            i > 0 && row[1]?.toString().trim() === candidateName.trim()
-        );
+            const rowIndex = rows.findIndex((row, i) =>
+                i > 0 && row[1]?.toString().trim() === candidateName.trim()
+            );
 
-        if (rowIndex === -1) {
-            throw new Error(`❌ "${candidateName}" not found in Excel`);
+            if (rowIndex === -1) {
+                throw new Error(`❌ "${candidateName}" not found in Excel`);
+            }
+
+            const updates = {
+                [`E${rowIndex + 1}`]: '30-Jun-2025',
+                [`F${rowIndex + 1}`]: 'Diploma In CRM WIL',
+                [`G${rowIndex + 1}`]: 'Verified'
+            };
+
+            for (const [cell, value] of Object.entries(updates)) {
+                sheet[cell] = { t: 's', v: value };
+                console.log(`✅ ${cell} = ${value}`);
+            }
+
+            XLSX.writeFile(workbook, filePath);
+            console.log(`📄 Excel updated for: ${candidateName}`);
         }
-
-        const updates = {
-            [`E${rowIndex + 1}`]: '30-Jun-2025',
-            [`F${rowIndex + 1}`]: 'Diploma In CRM WIL',
-            [`G${rowIndex + 1}`]: 'Verified'
-        };
-
-        for (const [cell, value] of Object.entries(updates)) {
-            sheet[cell] = { t: 's', v: value };
-            console.log(`✅ ${cell} = ${value}`);
-        }
-
-        XLSX.writeFile(workbook, filePath);
-        console.log(`📄 Excel updated for: ${candidateName}`);
     }
-}
-
-        
 
 
 
 
 
-    
+
+
 
 
 
